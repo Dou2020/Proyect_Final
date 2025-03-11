@@ -22,7 +22,10 @@ print(usuarios.eliminar_usuario('user3'))
 
 import prestamos
 prestamos.createTable()
-
+print(prestamos.prestar_libro('code1','user1'))
+print(prestamos.devolver_libro('code1','user1'))
+print(prestamos.prestar_libro('code2','user2'))
+print(prestamos.devolver_libro('code2','user2'))
 
 import morosidad
 import utilidades
