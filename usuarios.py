@@ -46,9 +46,17 @@ def eliminar_usuario(id):
     try:
         conn = sqlite3.connect('biblioteca.db')
         cursor = conn.cursor()
+        if id == '':
+            return 'Ingrese un ID'
+
         cursor.execute("DELETE FROM usuarios WHERE id = ?",(id,))
         conn.commit()
-        return f'Eliminar realizado de: {id}'
+
+        if cursor.rowcount == 1:
+            return f'Elimino usuario ID: {id}'
+        else:
+            return f'No se encontro el usuario ID: {id}'
+
     except Exception as err:
         return str(err)
     finally:

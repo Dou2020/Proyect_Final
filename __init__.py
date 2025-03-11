@@ -30,4 +30,7 @@ print(prestamos.prestar_libro('code2','user2'))
 print(prestamos.devolver_libro('code2','user2'))
 
 import morosidad
+morosidad.create_table()
+
+
 import utilidades
