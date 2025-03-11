@@ -8,7 +8,9 @@ print(libros.agregar_libro('code2','anonimo','code2'))
 print(libros.agregar_libro('code3','anonimo','code3'))
 print(libros.ver_libros())
 print(libros.eliminar_libro('code3'))
-print(libros.buscar_libro('code2'))
+print(libros.buscar_libro_titulo('code2'))
+print(libros.buscar_libro_isbm('code2'))
+print(libros.buscar_libro_autor('anonimo'))
 
 import usuarios
 usuarios.create_table()

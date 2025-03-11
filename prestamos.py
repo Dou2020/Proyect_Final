@@ -34,7 +34,7 @@ def prestar_libro(isbm,id_usuario):
         if not is_libro_prestar(isbm):
             cursor.execute("INSERT INTO prestamos(libros_isbm, id_usuario, tipo,dia) VALUES(?,?,?,?)",(isbm,id_usuario,'PRESTAR',date.today()))
             conn.commit()
-            return f'Insert correctamente {isbm} ,{id_usuario}'
+            return f'Insert Prestar: {isbm} ,{id_usuario}'
         else:
             return 'El libro ya esta prestado.'
 
@@ -48,7 +48,7 @@ def is_libro_prestar(isbm):
         conn = sqlite3.connect('biblioteca.db')
         cursor = conn.cursor()
 
-        cursor.execute('SELECT * FROM prestamos WHERE libros_isbm = ? and tipo = ? ',(isbm,'PRESTAR'))
+        cursor.execute('SELECT * FROM prestamos WHERE libros_isbm = ? and tipo = ? ORDER BY dia ASC LIMIT 1',(isbm,'PRESTAR'))
         return len(cursor.fetchall()) > 0
     except Exception as err:
         print(str(err))
@@ -67,7 +67,7 @@ def devolver_libro(isbm,id_usuario):
         if is_libro_prestar(isbm):
             cursor.execute("INSERT INTO prestamos(libros_isbm, id_usuario, tipo,dia) VALUES(?,?,?,?)",(isbm,id_usuario,'DEVOLVER',date.today()))
             conn.commit()
-            return f'Insert correctamente {isbm} ,{id_usuario}'
+            return f'Insert Devolver de: {isbm} ,{id_usuario}'
         else:
             return 'No hay libro prestado de este tipo'
 

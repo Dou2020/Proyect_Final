@@ -37,12 +37,15 @@ def agregar_libro(titulo, autor,isbm):
         conn = sqlite3.connect('biblioteca.db')
         cursor = conn.cursor()
 
-        if titulo !='' and autor !='' and isbm !='':
+        if titulo =='' and autor =='' and isbm =='':
+            return 'ingrese todos los atributos'
+        if len( buscar_libro_isbm(isbm) ) == 0:
             cursor.execute("INSERT INTO libros(isbm,titulo,autor) VALUES(?,?,?)",(isbm,titulo,autor,))
             conn.commit()
             return f'Insert correctamente {isbm} ,{titulo}, {autor}'
         else:
-            return 'ingrese todos los atributos'
+            return f'Ya existe el Libro con isbm: {isbm}'
+
     except Exception as err:
         return str(err)
     finally:
@@ -56,7 +59,10 @@ def eliminar_libro(isbm):
         if isbm !='' :
             cursor.execute("DELETE FROM libros WHERE isbm = ?", (isbm,))
             conn.commit()
-            return f'Elimino correctamente {isbm}'
+            if cursor.rowcount == 1:
+                return f'Elimino Libro ISBM: {isbm}'
+            else:
+                return f'No se encontro el Libro a eliminar ISBM: {isbm} '
         else:
             return 'Ingrese el ISBM'
     except Exception as err:

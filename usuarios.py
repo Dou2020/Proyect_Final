@@ -53,3 +53,31 @@ def eliminar_usuario(id):
         return str(err)
     finally:
         conn.close()
+
+def buscar_usuario_id(id):
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        if id != '' :
+            cursor.execute("SELECT * FROM usuarios WHERE id = ?", (id,))
+            return cursor.fetchall()
+        else:
+            return 'Ingrese un id del usuario'
+    except Exception as err:
+        str(err)
+    finally:
+        conn.close()
+
+def buscar_usuario_nombre(nombre):
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        if id != '' :
+            cursor.execute("SELECT * FROM usuarios WHERE nombre = ?", (nombre,))
+            return cursor.fetchall()
+        else:
+            return 'Ingrese el nombre del usuario'
+    except Exception as err:
+        str(err)
+    finally:
+        conn.close()
