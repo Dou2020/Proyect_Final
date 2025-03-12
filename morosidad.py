@@ -1,5 +1,5 @@
 import sqlite3
-
+from datetime import date
 def create_table():
     try:
         with sqlite3.connect('biblioteca.db') as conn:
@@ -7,10 +7,11 @@ def create_table():
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS morosidad (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    isbn_libros TEXT NOT NULL,
+                    isbm_libros TEXT NOT NULL,
                     id_usuario TEXT NOT NULL,
-                    FOREIGN KEY (isbn_libros) REFERENCES libros(isbn),
-                    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+                    fecha_devolucion DATE NOT NULL,
+                    FOREIGN KEY(isbm_libros) REFERENCES libros(isbm),
+                    FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario)
                 )
             ''')
     except sqlite3.DatabaseError as db_err:
@@ -18,6 +19,41 @@ def create_table():
     except Exception as err:
         print(f"Error general: {err}")
 
+def ver_morosidad_prestamos():
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT l.titulo, u.nombre, p.dia, p.fecha_devolucion, p.tipo FROM prestamos p INNER JOIN "
+        "libros l ON l.isbm = p.libros_isbm INNER JOIN usuarios u ON u.id = p.id_usuario WHERE p.fecha_devolucion < p.dia AND p.tipo = 'PRESTADO'")
+        return cursor.fetchall()
+    except Exception as err:
+        return(str(err))
+    finally:
+        conn.close()
+
+def agregar_morosidad(isbm, id_usuario):
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO morosidad(isbm_libros, id_usuario, fecha_devolucion) VALUES(?,?,?)",(isbm, id_usuario, date.today()))
+        conn.commit()
+        return f'La morosidad se ha registrado correctamente. Datos: {isbm}, {id_usuario}'
+    except Exception as err:
+        return str(err)
+    finally:
+        conn.close()
+
+def ver_todas_morosidades():
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT DISTINCT l.titulo, u.nombre, p.dia, p.fecha_devolucion, m.fecha_devolucion FROM morosidad m INNER JOIN "
+        "libros l ON l.isbm = m.isbm_libros INNER JOIN usuarios u ON u.id = m.id_usuario INNER JOIN prestamos p ON p.libros_isbm = m.isbm_libros AND p.id_usuario = m.id_usuario")
+        return cursor.fetchall()
+    except Exception as err:
+        return(str(err))
+    finally:
+        conn.close()
 
 def morosidad(isbn, id_usuario):
     """

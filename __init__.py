@@ -2,10 +2,12 @@ import tkinter as tk
 from views import VistaLibros
 from views import VistaUsuarios
 from views import VistaPrestamos
+from views import VistaMorosidad
 import libros
 import usuarios
 import prestamos
-#import utilidades
+import morosidad
+import utilidades
 
 root = tk.Tk()
 
@@ -20,12 +22,15 @@ def gestionDeUsuarios():
 def gestionDePrestamos():
     VistaPrestamos.gestionPrestamos(root, prestamos)
 
+def gestionMorosidad():
+    VistaMorosidad.gestionMorosidad(root, morosidad, prestamos)
 menu_bar = tk.Menu(root)
 root.config(menu=menu_bar)
 menu_gestion = tk.Menu(menu_bar, tearoff=0)
 menu_gestion.add_command(label="Libros", command=gestionDeLibros)
 menu_gestion.add_command(label="Usuarios", command=gestionDeUsuarios)
 menu_gestion.add_command(label="Prestamos", command=gestionDePrestamos)
+menu_gestion.add_command(label="Morosidad", command=gestionMorosidad)
 menu_bar.add_cascade(label="Gestión", menu=menu_gestion)
 
 
