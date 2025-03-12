@@ -36,7 +36,7 @@ def registrar_usuario(id, nombre, edad):
         cursor = conn.cursor()
         cursor.execute("INSERT INTO usuarios(id,nombre,edad) VALUES(?,?,?)",(id,nombre,edad,))
         conn.commit()
-        return f'Registro realizado de: {id}, {nombre}, {edad}'
+        return f'El usuario se ha registrado correctamente. Datos: {id}, {nombre}, {edad}'
     except Exception as err:
         return str(err)
     finally:
@@ -53,9 +53,9 @@ def eliminar_usuario(id):
         conn.commit()
 
         if cursor.rowcount == 1:
-            return f'Elimino usuario ID: {id}'
+            return f'Se la eliminado el usuario con el ID: {id}'
         else:
-            return f'No se encontro el usuario ID: {id}'
+            return f'No se encontro el usuario con el  ID: {id}'
 
     except Exception as err:
         return str(err)
