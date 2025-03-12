@@ -5,7 +5,7 @@ from views import VistaPrestamos
 import libros
 import usuarios
 import prestamos
-import utilidades
+#import utilidades
 
 root = tk.Tk()
 
