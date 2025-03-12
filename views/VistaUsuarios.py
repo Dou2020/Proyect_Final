@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from tkcalendar import DateEntry
 
 def focus_next_widget(event):
     event.widget.tk_focusNext().focus()
