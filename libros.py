@@ -42,7 +42,7 @@ def agregar_libro(titulo, autor,isbm):
         if len( buscar_libro_isbm(isbm) ) == 0:
             cursor.execute("INSERT INTO libros(isbm,titulo,autor) VALUES(?,?,?)",(isbm,titulo,autor,))
             conn.commit()
-            return f'Insert correctamente {isbm} ,{titulo}, {autor}'
+            return f'Libro agregado correctamente  {isbm} ,{titulo}, {autor}'
         else:
             return f'Ya existe el Libro con isbm: {isbm}'
 
@@ -60,7 +60,7 @@ def eliminar_libro(isbm):
             cursor.execute("DELETE FROM libros WHERE isbm = ?", (isbm,))
             conn.commit()
             if cursor.rowcount == 1:
-                return f'Elimino Libro ISBM: {isbm}'
+                return f'Libro Eliminado correctamente ISBM: {isbm}'
             else:
                 return f'No se encontro el Libro a eliminar ISBM: {isbm} '
         else:

@@ -18,15 +18,15 @@ usuarios.create_table()
 print(usuarios.registrar_usuario('user1','Dou',22))
 print(usuarios.registrar_usuario('user2','Eduar',12))
 print(usuarios.registrar_usuario('user3','Eduar',12))
-print(usuarios.ver_usuarios())
-print(usuarios.eliminar_usuario('user3'))
+#print(usuarios.ver_usuarios())
+#print(usuarios.eliminar_usuario('user3'))
 
 import prestamos
 prestamos.createTable()
-print(prestamos.prestar_libro('code1','user1'))
-print(prestamos.devolver_libro('code1','user1'))
-print(prestamos.prestar_libro('code2','user2'))
-print(prestamos.devolver_libro('code2','user2'))
+#print(prestamos.prestar_libro('code1','user1', '2021-10-10'))
+#print(prestamos.devolver_libro('code1','user1'))
+#print(prestamos.prestar_libro('code2','user2', '2021-10-10'))
+#print(prestamos.devolver_libro('code2','user2'))
 
 import morosidad
 morosidad.create_table()
