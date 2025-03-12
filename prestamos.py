@@ -31,25 +31,53 @@ def prestar_libro(isbm,id_usuario):
         if isbm == '' and id_usuario == '':
             return 'Ingrese todos los atributos'
 
-        if not is_libro_prestar(isbm):
+        if is_libro_prestar(isbm):
             cursor.execute("INSERT INTO prestamos(libros_isbm, id_usuario, tipo,dia) VALUES(?,?,?,?)",(isbm,id_usuario,'PRESTAR',date.today()))
             conn.commit()
             return f'Insert Prestar: {isbm} ,{id_usuario}'
         else:
-            return 'El libro ya esta prestado.'
+            return f'El libro isbm:{isbm} ya esta prestado por id:{id_usuario}'
 
     except Exception as err:
         return str(err)
     finally:
         conn.close()
 
-def is_libro_prestar(isbm):
+def buscar_prestar_isbm(isbm):
     try:
         conn = sqlite3.connect('biblioteca.db')
         cursor = conn.cursor()
+        if isbm !='' :
+            cursor.execute("SELECT * FROM prestamos WHERE libros_isbm = ?", (isbm,))
+            return cursor.fetchall()
+        else:
+            return 'Ingrese el ISBM'
+    except Exception as err:
+        return str(err)
+    finally:
+        conn.close()
 
-        cursor.execute('SELECT * FROM prestamos WHERE libros_isbm = ? and tipo = ? ORDER BY dia ASC LIMIT 1',(isbm,'PRESTAR'))
-        return len(cursor.fetchall()) > 0
+def buscar_prestar_usuario(usuario):
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        if usuario !='' :
+            cursor.execute("SELECT * FROM prestamos WHERE id_usuario = ?", (usuario,))
+            return cursor.fetchall()
+        else:
+            return 'Ingrese el ISBM'
+    except Exception as err:
+        return str(err)
+    finally:
+        conn.close()
+
+def is_libro_prestar(isbm,tipo):
+    try:
+        conn = sqlite3.connect('biblioteca.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT tipo FROM prestamos WHERE libros_isbm = ? ORDER BY id DESC LIMIT 1',(isbm,))
+
+
     except Exception as err:
         print(str(err))
         return False
@@ -64,12 +92,12 @@ def devolver_libro(isbm,id_usuario):
         if isbm =='' and id_usuario =='':
             return 'ingrese todos los atributos'
 
-        if is_libro_prestar(isbm):
+        if is_libro_prestar(isbm,'DEVOLVER'):
             cursor.execute("INSERT INTO prestamos(libros_isbm, id_usuario, tipo,dia) VALUES(?,?,?,?)",(isbm,id_usuario,'DEVOLVER',date.today()))
             conn.commit()
             return f'Insert Devolver de: {isbm} ,{id_usuario}'
         else:
-            return 'No hay libro prestado de este tipo'
+            return f'No hay libro prestado isbm:{isbm} y id:{id_usuario}'
 
     except Exception as err:
         return str(err)
